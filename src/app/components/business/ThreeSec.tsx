@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
-import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-
+import { STLLoader } from "three-stdlib";
+import { OrbitControls } from "three-stdlib";
 interface ThreeSectionProps {
   modelURL: string;
 }
@@ -83,8 +82,8 @@ const ThreeSection: React.FC<ThreeSectionProps> = ({ modelURL }) => {
         animate();
       },
       undefined,
-      (err: Error) => {
-        console.error("An error occurred loading the 3D model:", err);
+      (event: ErrorEvent) => {
+        console.error("An error occurred loading the 3D model:", event.message);
       }
     );
 
