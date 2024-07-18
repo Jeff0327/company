@@ -1,0 +1,39 @@
+{
+  "slides": [
+    {
+      "id": 1,
+      "src": "/image/swiper_1.jpg",
+      "alt": "Swiper image 1"
+    },
+    {
+      "id": 2,
+      "src": "/image/swiper_2.jpg",
+      "alt": "Swiper image 2"
+    },
+    {
+      "id": 3,
+      "src": "/image/swiper_3.jpg",
+      "alt": "Swiper image 3"
+    },
+    {
+      "id": 4,
+      "src": "/image/swiper_4.jpg",
+      "alt": "Swiper image 4"
+    },
+    {
+      "id": 5,
+      "src": "/image/swiper_5.jpg",
+      "alt": "Swiper image 5"
+    },
+    {
+      "id": 6,
+      "src": "/image/swiper_5.jpg",
+      "alt": "Swiper image 6"
+    },
+    {
+      "id": 7,
+      "src": "/image/swiper_5.jpg",
+      "alt": "Swiper image 6"
+    }
+  ]
+}
