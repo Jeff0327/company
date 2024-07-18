@@ -8,7 +8,7 @@ const Header: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
-    console.log("modalOpen");
+    
   };
   return (
     <>

@@ -2,18 +2,23 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { STLLoader } from "three-stdlib";
 import { OrbitControls } from "three-stdlib";
+
 interface ThreeSectionProps {
   modelURL: string;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ThreeSection: React.FC<ThreeSectionProps> = ({ modelURL }) => {
+const ThreeSection: React.FC<ThreeSectionProps> = ({ modelURL, isLoading, setIsLoading }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const modelRef = useRef<THREE.Mesh>();
 
   useEffect(() => {
-    const mount = mountRef.current!;
+    if (!mountRef.current) return;
+
+    const mount = mountRef.current;
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xf0f0f0); // Light gray background
+    scene.background = new THREE.Color(0xf0f0f0);
 
     const camera = new THREE.PerspectiveCamera(
       45,
@@ -21,34 +26,33 @@ const ThreeSection: React.FC<ThreeSectionProps> = ({ modelURL }) => {
       0.1,
       1000
     );
-    camera.position.set(0, 5, 10); // More natural camera position
+    camera.position.set(0, 5, 10);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(mount.clientWidth, mount.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     mount.appendChild(renderer.domElement);
 
-    // Add orbit controls for interactive viewing
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
 
-    // Add ambient light
     const ambientLight = new THREE.AmbientLight(0x404040);
     scene.add(ambientLight);
 
-    // Add directional light
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
     directionalLight.position.set(1, 1, 1);
     scene.add(directionalLight);
 
     const loader = new STLLoader();
 
+    setIsLoading(true); // Set loading to true when starting to load new model
+
     loader.load(
       modelURL,
       (geometry: THREE.BufferGeometry) => {
-        geometry.center(); // Center the geometry
-        geometry.computeVertexNormals(); // Compute vertex normals for smooth shading
+        geometry.center();
+        geometry.computeVertexNormals();
 
         const material = new THREE.MeshPhongMaterial({
           color: 0x6699ff,
@@ -57,22 +61,19 @@ const ThreeSection: React.FC<ThreeSectionProps> = ({ modelURL }) => {
         });
         const model = new THREE.Mesh(geometry, material);
 
-        // Scale the model to fit the scene
         const box = new THREE.Box3().setFromObject(model);
         const size = box.getSize(new THREE.Vector3()).length();
         const scale = 5 / size;
         model.scale.set(scale, scale, scale);
 
-        // Remove the previous model if it exists
         if (modelRef.current) {
           scene.remove(modelRef.current);
         }
 
-        // Save the current model reference
         modelRef.current = model;
         scene.add(model);
+        setIsLoading(false);
 
-        // Animation function
         const animate = () => {
           requestAnimationFrame(animate);
           controls.update();
@@ -84,11 +85,12 @@ const ThreeSection: React.FC<ThreeSectionProps> = ({ modelURL }) => {
       undefined,
       (event: ErrorEvent) => {
         console.error("An error occurred loading the 3D model:", event.message);
+        setIsLoading(false);
       }
     );
 
-    // Handle window resize
     const handleResize = () => {
+      if (!mount) return;
       camera.aspect = mount.clientWidth / mount.clientHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(mount.clientWidth, mount.clientHeight);
@@ -101,9 +103,18 @@ const ThreeSection: React.FC<ThreeSectionProps> = ({ modelURL }) => {
       mount.removeChild(renderer.domElement);
       renderer.dispose();
     };
-  }, [modelURL]); // Dependency array to reload when modelURL changes
+  }, [modelURL, setIsLoading]);
 
-  return <div ref={mountRef} className="flex w-screen h-screen" />;
+  return (
+    <div ref={mountRef} className="flex w-screen h-screen relative">
+      {isLoading && (
+        <div className="absolute flex-col inset-0 flex justify-center items-center bg-white bg-opacity-50">
+          <div className="loader"/>
+          <strong className="text-center p-2">로딩중</strong>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default ThreeSection;

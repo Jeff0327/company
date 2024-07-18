@@ -1,5 +1,6 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+
 interface Children {
   children: JSX.Element;
 }

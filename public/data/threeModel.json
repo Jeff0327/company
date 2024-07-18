@@ -1,14 +1,14 @@
 [
   {
     "image": "/image/sampleImg1.png",
-    "model": "/model/threeSample1.stl"
+    "model": "models/threeSample1.stl"
   },
   {
     "image": "/image/sampleImg2.png",
-    "model": "/model/threeSample2.stl"
+    "model": "models/threeSample2.stl"
   },
   {
     "image": "/image/sampleImg3.png",
-    "model": "/model/threeSample3.stl"
+    "model": "models/threeSample3.stl"
   }
 ]
