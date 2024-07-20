@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^7.12.0",
+    "aos": "^2.3.4",
     "axios": "^1.7.2",
     "framer-motion": "^11.3.0",
     "hamburgers": "^1.2.1",
@@ -22,6 +23,7 @@
     "three-stdlib": "^2.30.4"
   },
   "devDependencies": {
+    "@types/aos": "^3.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
